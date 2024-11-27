@@ -8,11 +8,31 @@ const Lista = () => {
     return (
         <div className="container">
             <ul>
-                <li><input type="text" onChange={(event) => setTarea(event.target.value)} value={tarea} onkeypress={(event) => event.keyCode == 13 ? setAgregar} ></input></li>
-                <li>Hola</li>
-                <li>Hola</li>
+                <li><input 
+                type="text" 
+                onChange={(event) => setTarea(event.target.value)} 
+                value={tarea} 
+                onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                        setAgregar(agregar.concat([tarea]));
+                        setTarea("");
+                     }}} placeholder="Agregar tarea"></input></li>
+                {agregar.map((item, index) => (
+                    <li>
+                        {item}{" "} <span onClick={() => 
+                            setAgregar(
+                                agregar.filter(
+                                    (t, currentIndex) => 
+                                        index != currentIndex))
+                        }>X</span>
+                    </li>
+                    )
+                )
+                }
             </ul>
+            <div>{agregar.length} tareas</div>
         </div>
+        
     );
 };
 
