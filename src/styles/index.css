@@ -1,4 +1,32 @@
-ul {
-    list-style: none;
+.bloque1{
+    background-color: lightgrey;
+    border-radius: 20px;
+    width: 500px;
+    margin: auto;
 }
+h1 {
+    margin: 20px;
+}
+input[type="text"] {
+    width: 100%;
+    border-radius: 2px;
+    border: none;
+    background-color: #0000;
+}
+ul {
+    padding: 0;
+}
+span {
+    float: right;
+}
+ul li {
+    list-style: none;
+    border: 1px solid grey;
+    padding: 4px;
+    width: 100%;
+}
+li {
+    background-color: #00000026;
+}
+
 

@@ -30,7 +30,7 @@ const Lista = () => {
                 )
                 }
             </ul>
-            <div>{agregar.length} tareas</div>
+            <div className="container">{agregar.length} tareas</div>
         </div>
         
     );
