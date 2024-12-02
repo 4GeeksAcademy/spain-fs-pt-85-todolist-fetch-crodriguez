@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 const Lista = () => {
     const [tarea,setTarea] = useState("");
-    const [agregar, setAgregar] = useState([]);
+    const [listado, setListado] = useState([]);
 
     async function crearUsuario() {
         try {
@@ -10,6 +10,10 @@ const Lista = () => {
                 method: "POST",
             });
             let data = await response.json();
+            console.log(response);
+            if (response.status === 201) {
+                obtenerTareas();
+            }
             console.log(data);
             return true;
         } catch (error) {
@@ -17,18 +21,23 @@ const Lista = () => {
             return;
         }
     }
-    useEffect(()=>{
-		crearUsuario()
+    // useEffect(()=>{
+	// 	crearUsuario()
 
-	},[])
+	// },[])
 
     async function obtenerTareas() {
         try {
-            let response = await fetch('https://playground.4geeks.com/todo/todos/crodriguez', {
+            let response = await fetch('https://playground.4geeks.com/todo/users/crodriguez', {
                 method: "GET",
             });
             let data = await response.json();
-            console.log(data);
+            
+            if (response.status === 404) {
+                crearUsuario();
+            }
+            // console.log(data);
+            setListado(data.todos);
             return true;
         } catch (error) {
             console.log(error);
@@ -42,12 +51,22 @@ const Lista = () => {
 
     async function agregarTarea() {
         try {
-            let response = await fetch('https://playground.4geeks.com/todo/todos/{id}', {
-                method: "PUT",
-                "label": "string",
-                "is_done": true
+            let response = await fetch('https://playground.4geeks.com/todo/todos/crodriguez', {
+                method: "POST",
+                body: JSON.stringify({
+                    "label": tarea,
+                    "is_done": false
+                  }),
+                 headers: {
+                "Content-Type": "application/json"
+      }
             });
+            console.log(response);
+            if (response.status === 204) {
+                obtenerTareas();
+            }
             let data = await response.json();
+            
             console.log(data);
             return true;
         } catch (error) {
@@ -55,16 +74,24 @@ const Lista = () => {
             return;
         }
     }
-    useEffect(()=>{
-		agregarTarea()
+    // useEffect(()=>{
+	// 	agregarTarea()
 
-	},[])
+	// },[])
 
-    async function borrarTarea() {
+    async function borrarTarea(id) {
+        console.log(id);
         try {
-            let response = await fetch('https://playground.4geeks.com/todo/todos/{id}', {
+            let response = await fetch('https://playground.4geeks.com/todo/todos/'+id, {
                 method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+          }
             });
+            console.log(response);
+            if (response.status === 204) {
+                obtenerTareas();
+            }
             let data = await response.json();
             console.log(data);
             return true;
@@ -73,10 +100,10 @@ const Lista = () => {
             return;
         }
     }
-    useEffect(()=>{
-		borrarTarea()
+    // useEffect(()=>{
+	// 	borrarTarea()
 
-	},[])
+	// },[])
 
     return (
         <div className="container">
@@ -87,23 +114,13 @@ const Lista = () => {
                 value={tarea} 
                 onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                        setAgregar(agregar.concat([tarea]));
-                        setTarea("");
+                        agregarTarea(tarea);
                      }}} placeholder="Agregar tarea"></input></li>
-                {agregar.map((item, index) => (
-                    <li key={item.index}>
-                        {item}{" "} <span onClick={() => 
-                            setAgregar(
-                                agregar.filter(
-                                    (t, currentIndex) => 
-                                        index != currentIndex))
-                        }>X</span>
-                    </li>
-                    )
-                )
-                }
+                {listado.map((item) =><li key={item.id}>{item.label}<span onClick={()=>borrarTarea(item.id)}>X</span></li>)}
+                
+         
             </ul>
-            <div className="container">{agregar.length} tareas</div>
+            <div className="container">{listado.length} tareas</div>
         </div>
         
     );
