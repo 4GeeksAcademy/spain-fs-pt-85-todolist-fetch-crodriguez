@@ -62,7 +62,7 @@ const Lista = () => {
       }
             });
             console.log(response);
-            if (response.status === 204) {
+            if (response.status === 201) {
                 obtenerTareas();
             }
             let data = await response.json();
@@ -86,7 +86,7 @@ const Lista = () => {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
-          }
+                        }
             });
             console.log(response);
             if (response.status === 204) {
@@ -109,13 +109,14 @@ const Lista = () => {
         <div className="container">
             <ul>
                 <li><input 
-                type="text" 
+                type="text"
+                placeholder="Agregar tarea"
                 onChange={(event) => setTarea(event.target.value)} 
                 value={tarea} 
                 onKeyDown={(event) => {
                     if (event.key === "Enter") {
                         agregarTarea(tarea);
-                     }}} placeholder="Agregar tarea"></input></li>
+                     }}}></input></li>
                 {listado.map((item) =><li key={item.id}>{item.label}<span onClick={()=>borrarTarea(item.id)}>X</span></li>)}
                 
          
