@@ -116,6 +116,7 @@ const Lista = () => {
                 onKeyDown={(event) => {
                     if (event.key === "Enter") {
                         agregarTarea(tarea);
+                        setTarea("");
                      }}}></input></li>
                 {listado.map((item) =><li key={item.id}>{item.label}<span onClick={()=>borrarTarea(item.id)}>X</span></li>)}
                 
